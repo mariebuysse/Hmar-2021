@@ -98,3 +98,10 @@ print(tab_minmax)
 colour = sns.color_palette("rocket_r", as_cmap=True)
 sns.heatmap(tab_minmax, robust=True, xticklabels=1,cmap=colour,linewidths=.5)
 plt.show()
+
+
+##FB vitamins, heme, FPI pathways and mismatch repair system analyses
+makeblastdb -in finalgenome_scaffolds.fasta -dbtype nucl -out genome_db
+blastn -query query-gene.fasta -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -perc_identity 40 -out gene_vs_genome.out -db genome_db 
+makeblastdb -in annotation.faa -dbtype prot -out genome_db
+blastp -query query-gene.faa -out gene_vs_genome.out -num_threads 6 -db genome_db -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -evalue 1e-1
