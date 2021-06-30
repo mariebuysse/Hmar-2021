@@ -1,3 +1,7 @@
+#for the Italian and Spanish isolates
+
+
+
 #for the Israeli isolate
 #mapping 
 bwa index ref-genome.fasta
