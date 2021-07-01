@@ -1,4 +1,4 @@
-#for the Italian and Spanish isolates
+#for the Italian and Spanish isolates (Anna Maria, Tiago, can you complete this part please?)
 
 
 
@@ -22,7 +22,6 @@ ragoo.py draftgenome_scaffolds.fasta ref-genome.fasta
 
 #quality and completeness analyses
 quast.py finalgenome_scaffolds.fasta
-## ADD MiComplete command line
+## ADD MiComplete command line (to be completed by Marie)
 
-#annotation 
-## ADD command line
+#annotation (to be completed by Marie)
