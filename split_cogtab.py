@@ -1,6 +1,7 @@
-# Use as: python3 split_cogtab.py orthogroups.tsv <GENOME>
+#!/usr/bin/env python3
 import sys
 import re
+# Use as: python3 split_cogtab.py orthogroups.tsv <GENOME>
 genome = sys.argv[2]
 orthofile = sys.argv[1]
 f = open(orthofile)
