@@ -24,22 +24,8 @@ tail -n +2 Phylogenetic_Hierarchical_Orthogroups/N0.tsv | awk '{ $1=""; $3=""; p
 # We add the genes unassigned to orthogroups
 tail -n +2 ../Orthogroups/Orthogroups_UnassignedGenes.tsv | sed 's/,//g' | perl -pe 's/([A-Z]+)_[0-9]+/\1/gi' >> orthogroups.tsv
 # We use the table to extract the list of orthogroups present for each genome
-python3 splitta_cogtab.py orthogroups.tsv <GENOME> | sort | uniq > <GENOME>.og
-
-# script "splitta_cogtab.sh"
-# name to search from table
-# use as: python3 splitta_cogtab.py FLEISR orthogroups.tsv
-import sys
-import re
-genome = sys.argv[2]
-orthofile = sys.argv[1]
-f = open(orthofile)
-for line in f:
-	linea=line.strip().split("\t")
-	for l in linea[1:]:
-		if l == genome:
-			print (linea[0])
-
+#
+python3 split_cogtab.py orthogroups.tsv <GENOME> | sort | uniq > <GENOME>.og
 
 # Pseudogene prediction, using Prokka, Pseudofinder, and hoc script to get a subset of genes
 # These steps were repeated with each genome
@@ -47,12 +33,12 @@ for line in f:
 prokka --rfam --compliant <FASTA>
 # We launched pseudofinder 1.0 on each genome
 python3 /pseudofinder-1.0/pseudofinder.py annotate --genome <genbank file> --outprefix <prefix> --diamond -db <path to diamond db>
-# $1 sigla tipo sigla_intact.faa
+# $1 prefix
 # $2 ffn
 grep '^>' $1_intact.faa | sed 's/>//g' | awk '{print $1}' > lista_buoni
-python3 ~/script/acchiappa_fasta.py $1_proteome.faa lista_buoni -r	
+python3 get_fasta.py  $1_proteome.faa lista_buoni -r	
 grep '^>' $1_proteome.faa.subset.fasta | sed 's/>//g' | awk '{print $1}' > lista_scarti
-python3 ~/script/acchiappa_fasta.py $2 lista_scarti -r
+python3 get_fasta.py  $2 lista_scarti -r
 # Extract the list of intact proteins from the outputs of pseudofinder
 grep '^>' <prefix>_intact.faa | sed 's/>//g' | awk '{print $1}' > genes2keep.list
 # The ad hoc script will take all genes not present in the list
@@ -63,42 +49,6 @@ grep '^>' <prefix>_proteome.faa.subset.fasta | sed 's/>//g' | awk '{print $1}' >
 # We use this list to get a subset from <genome.ffn> made by Prokka
 python3 get_fasta.py <genome>.ffn genes2rumenta.list -r
 # <genome>.ffn.subset.fasta is the fasta containing the DNA sequences of all genes, including RNAs, predicted as intact
-
-# script "get-fasta.sh"
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 26 10:32:57 2019
-"""
-from Bio import SeqIO
-import sys
-with open(sys.argv[2]) as c:
-	lista_nomi=c.read().splitlines()
-out = (str(sys.argv[1])+".subset.fasta")
-if len(sys.argv)==4:
-		if sys.argv[3]=="-r":
-			print("Excluding the list")
-			records = (r for r in SeqIO.parse(sys.argv[1], "fasta") if r.id not in lista_nomi)
-		else:
-			print("Wrong sysargv")
-else:
-	records = (r for r in SeqIO.parse(sys.argv[1], "fasta") if r.id in lista_nomi)
-SeqIO.write(records, out, "fasta")
-
-
-# pseudogenization level representation (python)
-import seaborn as sns; sns.set()
-import matplotlib.pyplot as plt
-import pandas as pd
-import sys
-data=sys.argv[1]
-tab = pd.read_csv(data, index_col=0,sep="\t").T
-tab_minmax=(tab/tab.max())
-print(tab_minmax)
-colour = sns.color_palette("rocket_r", as_cmap=True)
-sns.heatmap(tab_minmax, robust=True, xticklabels=1,cmap=colour,linewidths=.5)
-plt.show()
-
 
 ##FB vitamins, heme, FPI pathways and mismatch repair system analyses
 makeblastdb -in finalgenome_scaffolds.fasta -dbtype nucl -out genome_db
