@@ -21,8 +21,8 @@ quast.py draftgenome_scaffolds.fasta
 ragoo.py draftgenome_scaffolds.fasta ref-genome.fasta
 
 #quality and completeness analyses
-quast.py finalgenome_scaffolds.fasta
-## ADD MiComplete command line (to be completed by Marie)
+quast.py finalgenome_scaffolds.fasta 
+miComplete set.tab --hmms Bact105 #set.tab a directory containing per line both a path to a genome as well as the type separated by a tab (i.e. fna file here)
 
 #annotation 
 prokka --setupdb ./MidiIricVA_current_v2.faa
