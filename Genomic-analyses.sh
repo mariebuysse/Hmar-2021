@@ -14,7 +14,6 @@ COG/COGmakehash/COGmakehash -i=tmp.p2o.csv -o=./BLASTcogn -s="," -n=1
 COG/COGreadblast/COGreadblast -d=./BLASTcogn -u=./BLASTno -f=./BLASTff -s=./BLASTss -e=0.1 -q=2 -t=2
 COG/COGcognitor/COGcognitor -i=./BLASTcogn -t=cog2003-2014.csv -q=GenQuery.p2o.csv -o=GenQuery.COG.csv
 
-
 # Launch orthofinder, using blast
 orthofinder -f <genomes_location/> -S blast
 # Go to the results folder of Orthofinder
@@ -24,7 +23,6 @@ tail -n +2 Phylogenetic_Hierarchical_Orthogroups/N0.tsv | awk '{ $1=""; $3=""; p
 # We add the genes unassigned to orthogroups
 tail -n +2 ../Orthogroups/Orthogroups_UnassignedGenes.tsv | sed 's/,//g' | perl -pe 's/([A-Z]+)_[0-9]+/\1/gi' >> orthogroups.tsv
 # We use the table to extract the list of orthogroups present for each genome
-#
 python3 split_cogtab.py orthogroups.tsv <GENOME> | sort | uniq > <GENOME>.og
 
 # Pseudogene prediction, using Prokka, Pseudofinder, and hoc script to get a subset of genes
