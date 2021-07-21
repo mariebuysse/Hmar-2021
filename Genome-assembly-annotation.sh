@@ -24,4 +24,6 @@ ragoo.py draftgenome_scaffolds.fasta ref-genome.fasta
 quast.py finalgenome_scaffolds.fasta
 ## ADD MiComplete command line (to be completed by Marie)
 
-#annotation (to be completed by Marie)
+#annotation 
+prokka --setupdb ./MidiIricVA_current_v2.faa
+prokka <FASTA> --outdir <DIR> --genus Midichloria --strain <NAME STRAIN> --cpus 2 --locustag <Midi+NAME STRAIN> --proteins ./MidiIricVA_current_v2.faa
