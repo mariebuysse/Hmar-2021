@@ -53,3 +53,9 @@ makeblastdb -in finalgenome_scaffolds.fasta -dbtype nucl -out genome_db
 blastn -query query-gene.fasta -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -perc_identity 40 -out gene_vs_genome.out -db genome_db 
 makeblastdb -in annotation.faa -dbtype prot -out genome_db
 blastp -query query-gene.faa -out gene_vs_genome.out -num_threads 6 -db genome_db -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -evalue 1e-1
+
+# Checking the presence of the biotin genes in the 3 preliminary assemblies (Hymar-ES, Hymar-IT, Hymar-IL)
+# Steps repeated for each preliminary assembly
+# Using as query the protein sequences of the biotin operon ("biotin.faa")
+makeblastdb -in preliminary_assembly.fasta -dbtype nucl
+tblastn -query biotin.faa -db  preliminary_assembly.fasta | less 
