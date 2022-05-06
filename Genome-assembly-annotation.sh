@@ -1,7 +1,3 @@
-#for the Italian and Spanish isolates (Anna Maria, Tiago, can you complete this part please?)
-
-
-
 #for the Israeli isolate
 #mapping 
 bwa index ref-genome.fasta
